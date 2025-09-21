@@ -4,37 +4,23 @@
 [![Docker](https://img.shields.io/badge/Docker-Enabled-blue.svg)](https://www.docker.com/)
 [![Kubernetes](https://img.shields.io/badge/Kubernetes-Ready-green.svg)](https://kubernetes.io/)
 
-An open-source demonstration project showcasing **complete end-to-end development and deployment** of a microservices-based application using modern DevOps practices.
+A simple but complete full stack project showcasing **complete end-to-end development and deployment** of a microservices-based application using modern DevOps practices.
 
 ## 🎯 Project Overview
 
-This project demonstrates a full-stack microservices architecture deployed on Kubernetes, featuring:
+This project demonstrates a full-stack microservices architecture deployed on Kubernetes in AWS, featuring:
 
 - **Frontend**: React TypeScript application with Grommet UI
 - **Backend Services**: 
   - Books Service (Node.js/Express)
   - Publishers Service (Python/FastAPI)
 - **Containerization**: Docker containers for all services
-- **Orchestration**: Kubernetes deployment with Minikube
-- **Infrastructure**: Complete K8s manifests with ingress configuration
+- **Orchestration**: Kubernetes deployment along with complete K8s manifests with ingress configuration
+- **Infrastructure**: AWS EC2, AWS S3 and Minikube
 
 ## 🏗️ Architecture
 
-```
-┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
-│   React UI      │    │   Books Service  │    │ Publishers      │
-│   (TypeScript)  │◄──►│   (Node.js)      │    │ Service         │
-│   Port: 3000    │    │   Port: 3000     │    │ (Python/FastAPI)│
-└─────────────────┘    └──────────────────┘    │ Port: 80        │
-                                               └─────────────────┘
-         │                        │                       │
-         └────────────────────────┼───────────────────────┘
-                                  │
-                    ┌─────────────▼──────────────┐
-                    │     Kubernetes Ingress     │
-                    │     (NGINX Controller)     │
-                    └────────────────────────────┘
-```
+![Arch diagram](/docs/image.png)
 
 ## 🚀 Quick Start
 

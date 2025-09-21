@@ -226,27 +226,6 @@ EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
 ```
 
-## 🧪 Testing
-
-### Manual Testing Checklist
-
-- [ ] Application loads without errors
-- [ ] "Show books data" button fetches and displays books
-- [ ] "Show publishers data" button fetches and displays publishers
-- [ ] Refresh buttons update the data
-- [ ] Loading spinners appear during API calls
-- [ ] Feedback link opens correctly
-- [ ] Responsive design works on different screen sizes
-
-### Future Testing Enhancements
-
-```bash
-# Install testing dependencies (when implemented)
-npm install --save-dev @testing-library/react @testing-library/jest-dom
-
-# Run tests (when implemented)
-npm test
-```
 
 ## 🎨 Styling & Theme
 
