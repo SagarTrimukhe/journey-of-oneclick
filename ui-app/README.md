@@ -20,7 +20,7 @@ The application follows a component-based architecture:
 ┌─────────────────────────────────────────┐
 │               App.tsx                   │
 │  ┌─────────────────────────────────────┐│
-│  │           DemoPage/                 ││
+│  │           HomePage/                 ││
 │  │  ┌─────────────┬─────────────────┐  ││
 │  │  │ Books Panel │ Publishers Panel│  ││
 │  │  │             │                 │  ││
@@ -61,22 +61,27 @@ The application will be available at `http://localhost:3000`
 ### Project Structure
 ```
 ui-app/
-├── public/                     # Static assets
-│   ├── index.html             # HTML template
-│   ├── favicon.ico            # App favicon
-│   ├── manifest.json          # PWA manifest
-│   └── robots.txt             # SEO robots file
-├── src/                       # Source code
-│   ├── App.tsx                # Main application component
-│   ├── App.css                # Global styles
-│   ├── index.tsx              # React entry point
-│   ├── index.css              # Global CSS
-│   ├── react-app-env.d.ts     # TypeScript declarations
-│   └── DemoPage/              # Main demo component
-│       └── index.tsx          # Demo page implementation
-├── package.json               # Dependencies and scripts
-├── tsconfig.json              # TypeScript configuration
-└── README.md                  # This documentation
+├── .env                       # Environment configuration
+├── .gitignore                 # Git ignore patterns
+├── public/                    # Static assets
+│   ├── index.html            # HTML template
+│   ├── favicon.ico           # App favicon
+│   ├── manifest.json         # PWA manifest
+│   ├── logo192.png           # Logo assets
+│   ├── logo512.png           # Logo assets
+│   └── robots.txt            # SEO robots file
+├── src/                      # Source code
+│   ├── App.tsx               # Main application component
+│   ├── App.css               # Global styles
+│   ├── index.tsx             # React entry point
+│   ├── index.css             # Global CSS
+│   ├── react-app-env.d.ts    # TypeScript declarations
+│   └── HomePage/             # Main home component
+│       ├── index.tsx         # Home page implementation
+│       └── types.ts          # TypeScript type definitions
+├── package.json              # Dependencies and scripts
+├── tsconfig.json             # TypeScript configuration
+└── README.md                 # This documentation
 ```
 
 ## 📦 Dependencies
@@ -86,6 +91,7 @@ ui-app/
 - **react-dom** (^18.2.0) - DOM rendering
 - **typescript** (^4.9.5) - Type safety
 - **axios** (^1.4.0) - HTTP client for API calls
+- **@types/node** (^16.18.34) - Node.js TypeScript definitions
 
 ### UI Components
 - **grommet** (^2.32.1) - UI component library
@@ -105,12 +111,15 @@ ui-app/
 #### App Component (`App.tsx`)
 - Main application wrapper
 - Grommet theme provider
-- Feedback link integration
+- HomePage component integration
+- Feedback link with chat icon integration
 
-#### DemoPage Component (`DemoPage/index.tsx`)
+#### HomePage Component (`HomePage/index.tsx`)
 - Split-panel layout for Books and Publishers
 - State management for data and loading states
 - API integration with error handling
+- Environment-based API configuration
+- Interactive data display with refresh functionality
 
 ### Interactive Features
 
@@ -124,13 +133,16 @@ ui-app/
    - "Fetching..." text feedback
 
 3. **Data Display**
-   - Interactive DataTable components
-   - Responsive columns (Name, Author/Revenue)
-   - Clean, organized presentation
+   - Interactive DataTable components with primary key indexing
+   - Responsive columns (Book Name/Author, Publisher Name/Revenue)
+   - Clean, organized presentation with bold headers
 
 4. **User Experience**
-   - Intuitive button placement
+   - Full-height application layout (90vh)
+   - Header section with application title
+   - Split-view design with bordered panels
    - Visual feedback for all actions
+   - Chat icon integration for feedback
    - Responsive design principles
 
 ## 🌐 API Integration
@@ -138,8 +150,14 @@ ui-app/
 The application connects to backend microservices:
 
 ### Configuration
+The API host is configured using environment variables:
 ```typescript
-const HOST = "http://ec2-3-144-100-189.us-east-2.compute.amazonaws.com"
+const HOST = process.env.REACT_APP_HOST
+```
+
+Current configuration in `.env`:
+```env
+REACT_APP_HOST=http://ec2-3-144-100-189.us-east-2.compute.amazonaws.com
 ```
 
 ### Endpoints
@@ -148,35 +166,37 @@ const HOST = "http://ec2-3-144-100-189.us-east-2.compute.amazonaws.com"
 
 ### Data Models
 
-**Books Response:**
+The application uses well-structured TypeScript interfaces defined in `HomePage/types.ts`:
+
+**Individual Item Types:**
 ```typescript
-interface IBooksResponse {
-    items: Array<{
-        id: string;
-        name: string;
-        author: string;
-    }>;
-    metadata: {
-        title: string;
-        source: string;
-    };
+interface IBookItem {
+    id: string;
+    name: string;
+    author: string;
+}
+
+interface IPublisherItem {
+    id: string;
+    name: string;
+    revenue: string;
 }
 ```
 
-**Publishers Response:**
+**API Response Types:**
 ```typescript
+interface IBooksResponse {
+    items: Array<IBookItem>;
+    metadata: { title: string; source: string };
+}
+
 interface IPublishersResponse {
-    items: Array<{
-        id: string;
-        name: string;
-        revenue: string;
-    }>;
-    metadata: {
-        title: string;
-        source: string;
-    };
+    items: Array<IPublisherItem>;
+    metadata: { title: string; source: string };
 }
 ```
+
+All types are properly exported and imported for type safety across components.
 
 ## 🚀 Deployment
 
@@ -244,11 +264,19 @@ The application uses Grommet's default theme with:
 ## 🔧 Configuration
 
 ### Environment Variables
-Create a `.env` file for environment-specific configurations:
+The application uses a `.env` file for environment-specific configurations:
 
 ```env
-REACT_APP_API_HOST=http://localhost:8080
-REACT_APP_ENVIRONMENT=development
+REACT_APP_HOST=http://ec2-3-144-100-189.us-east-2.compute.amazonaws.com
+```
+
+**Environment Variable Reference:**
+- `REACT_APP_HOST` - Backend API host URL for microservices
+
+### Package.json Configuration
+The project also includes a proxy configuration for development:
+```json
+"proxy": "http://ec2-18-119-122-189.us-east-2.compute.amazonaws.com"
 ```
 
 ### TypeScript Configuration
@@ -287,9 +315,10 @@ This application is part of the larger "Journey of a Click" project. Contributio
 1. Fork the main repository
 2. Create a feature branch
 3. Make your changes in the `ui-app/` directory
-4. Test locally with `npm start`
-5. Build successfully with `npm run build`
-6. Submit a pull request
+4. Update environment variables as needed in `.env`
+5. Test locally with `npm start`
+6. Build successfully with `npm run build`
+7. Submit a pull request
 
 ## 📄 License
 

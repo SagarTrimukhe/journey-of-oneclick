@@ -1,21 +1,19 @@
-import React from 'react';
-import './App.css';
 import { Anchor, Grommet, Box } from 'grommet';
-import DemoPage from './DemoPage';
+import HomePage from './HomePage';
+import { Chat } from 'grommet-icons';
 
 function App() {
   return (
-    <div className="App">
-     <Grommet>
-      <DemoPage/>
-      <Box margin={'20px'}>
-        <Anchor 
+    <Grommet>
+      <HomePage />
+      <Box margin={'20px'} direction='column' gap='xsmall' align='center' justify='center'>
+        <Chat />
+        <Anchor
           href={"https://forms.gle/XW8PLFjzEEg2JPKj9"}
           target="_blank"
-        >Click here to provide Feedback</Anchor>
+        >Provide feedback</Anchor>
       </Box>
-     </Grommet>
-    </div>
+    </Grommet>
   );
 }
 
